@@ -3,5 +3,8 @@ print ('welcome to the tip calculator')
 bill = float(input ('what was the total of the bill? '))
 people =float( input ('How many people to split the bill? '))
 tip = float(input ('what percentage tip would you like to pay? 10 , 12 pr 15? '))
-total = (bill/tip)/people
-print ('each person should pay:\t'+str(total))
+tipp = tip/100
+total_tip = bill * tipp
+tip_person = total_tip/people
+total_person = (bill/people) + tip_person
+print ('each person should pay:\t'+str(total_person))
