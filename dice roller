@@ -1,0 +1,6 @@
+import random
+dice = input('would you like to roll the dice\t').lower()
+while dice == 'yes' or 'y':
+  print ('your random dice number is:')
+  print (random.randint(1,6))
+  dice = input('would you like to roll the dice again').lower()
