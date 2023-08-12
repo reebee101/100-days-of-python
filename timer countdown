@@ -6,8 +6,9 @@ def countdown (t):
    while t!=0: #while time isnt zero , proceed 
        
        min,secs = divmod(t,60) #divmod = t/60 (basic division)
+       hours,min=divmod(min,60)
        #{:02d} means its to 10 base -> 10 , 08 , 54...
-       timer = '{:02d}:{:02d}'.format(min,secs)  #.formats the specified value(s) and insert them inside the string's placeholder
+       timer = '{:02d}:{:02d}:{:02d}'.format(hours,min,secs)  #.formats the specified value(s) and insert them inside the string's placeholder
        print (timer,end='\r') #\r :carriage return returns the cursor to the beginning of the same line
        time.sleep(1) #stops function for one second
        t=t-1 #decreasing by one second
