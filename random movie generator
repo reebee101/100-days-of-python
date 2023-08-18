@@ -1,0 +1,48 @@
+import random
+import requests
+def api_showing_movie():
+     '''()->str
+     function uses an imdb api
+     using imdb url and the genre desired , with a limit to no. of results
+     returns movie name from requested genre
+     '''
+     url = "https://imdb8.p.rapidapi.com/title/v2/get-popular-movies-by-genre"
+     querystring = {"genre":mood}
+     headers = {
+	 "X-RapidAPI-Key": "ffd44556camsh3a5b802bb586f56p10f759jsn6c25ffadb53b",
+	 "X-RapidAPI-Host": "imdb8.p.rapidapi.com"
+     }
+     movies = requests.get(url, headers=headers, params=querystring)
+     return(movies)
+ 
+def movie_title():
+     ID =random[7:-1] #tt0000002   
+     API_KEY='plug key here'
+     movieinfo=requests.get('http://www.omdbapi.com/?apikey='+API_KEY+'&i='+ID).json()
+     return (movieinfo)
+
+mood=['romance' ,'mystery' ,'drama' ,'adventure' ,'sci-fi ','action' ,'comedy' ,'thriller ', 'horror','animation','biography','crime','documentary','family','fantasy','history','music','musical','sports','war']
+choose = input('would you like to randomize your genre? ').lower()
+
+if choose == 'yes':
+    mood_chosen=random.choice(mood)
+    print('your chosen genre is:',mood_chosen)
+    url = "https://imdb8.p.rapidapi.com/title/v2/get-popular-movies-by-genre"
+    querystring = {"genre":mood_chosen}
+    headers = {
+	"X-RapidAPI-Key": "ffd44556camsh3a5b802bb586f56p10f759jsn6c25ffadb53b",
+	"X-RapidAPI-Host": "imdb8.p.rapidapi.com"
+    }
+    movies = requests.get(url, headers=headers, params=querystring)
+    random = random.choice(movies.json())
+    details=movie_title()
+    print(details.json())
+    exit()
+    
+else:
+    mood = input ('choose your genre:romance ,mystery ,drama ,adventure ,sci-fi ,action ,comedy ,thriller ,animation ,biography ,family ,crime ,documentary ,fantasy ,history ,msuic ,musical ,sports ,war or horror: ').lower()
+    for i in range(1):
+         movies=api_showing_movie()
+         random=random.choice(movies.json())
+         details=movie_title()  
+         print(details.json())   
