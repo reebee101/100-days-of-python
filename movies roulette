@@ -16,21 +16,10 @@ def api_showing_movie():
      return(movies)
  
 def movie_title():
-     ID =random[7:-1] #tt0000002   
+     ID = random[7:-1]
      API_KEY='6bf7ef52'
      movieinfo=requests.get('http://www.omdbapi.com/?apikey='+API_KEY+'&i='+ID).json()
      return (movieinfo)
-
-def streaming_availability():
-   ID ='tt14230388'
-   url = "https://streaming-availability.p.rapidapi.com/get"
-   querystring = {"imdb_id":ID}
-   headers = {
-   "X-RapidAPI-Key": "ffd44556camsh3a5b802bb586f56p10f759jsn6c25ffadb53b",
-   "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com"
-    }
-   availability = requests.get(url, headers=headers, params=querystring)
-   return(availability)
 
 mood=['romance' ,'mystery' ,'drama' ,'adventure' ,'sci-fi ','action' ,'comedy' ,'thriller ', 'horror','animation','biography','crime','documentary','family','fantasy','history','music','musical','sports','war']
 choose = input('would you like to randomize your genre? ').lower()
@@ -46,11 +35,9 @@ if choose == 'yes':
     }
     movies = requests.get(url, headers=headers, params=querystring)
     random = random.choice(movies.json())
-    print(random.json())
+    print(random)
     details=movie_title()
-    print(details.json())
-    streaming = streaming_availability()
-    print(streaming.json())
+    print(details,'\n')
     exit()
     
 else:
@@ -59,6 +46,4 @@ else:
          movies=api_showing_movie()
          random=random.choice(movies.json())
          details=movie_title()  
-         print(details.json())   
-         streaming = streaming_availability()
-         print(streaming.json())
+         print(details,'\n') 
