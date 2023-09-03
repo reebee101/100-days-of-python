@@ -23,14 +23,7 @@ def movie_title():
     ID = random_movie[7:-1]
     API_KEY='6bf7ef52'
     movie_info=get('http://www.omdbapi.com/?apikey='+API_KEY+'&i='+ID).json()
-    # Check if the request was successful
-    if movie_info.status_code == 200:
-        return (movie_info)
-    else:
-        print("Error finding movie information")
-        return None
     
-
 mood=['romance' ,'mystery' ,'drama' ,
      'adventure' ,'sci-fi ','action' ,
      'comedy' ,'thriller ', 'horror','animation',
