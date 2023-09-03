@@ -12,23 +12,31 @@ def api_showing_movie():
 	"X-RapidAPI-Key": "ffd44556camsh3a5b802bb586f56p10f759jsn6c25ffadb53b",
 	"X-RapidAPI-Host": "imdb8.p.rapidapi.com"
     }
-    movies =get(url, headers=headers, params=querystring)
-    return(movies)
+    movies=get(url, headers=headers, params=querystring)
+    if movies.status_code==200:
+        return(movies)
+    else:
+        print("Error getting a movie!")
+        return None
  
 def movie_title():
-    ID = random[7:-1]
+    ID = random_movie[7:-1]
     API_KEY='6bf7ef52'
-    movieinfo=get('http://www.omdbapi.com/?apikey='+API_KEY+'&i='+ID).json()
-    return (movieinfo)
+    movie_info=get('http://www.omdbapi.com/?apikey='+API_KEY+'&i='+ID).json()
+    # Check if the request was successful
+    if movie_info.status_code == 200:
+        return (movie_info)
+    else:
+        print("Error finding movie information")
+        return None
+    
 
-mood=[
-    'romance' ,'mystery' ,'drama' ,
-    'adventure' ,'sci-fi ','action' ,
-    'comedy' ,'thriller ', 'horror','animation',
-    'biography','crime','documentary',
-    'family','fantasy','history',
-    'music','musical','sports','war'
-]
+mood=['romance' ,'mystery' ,'drama' ,
+     'adventure' ,'sci-fi ','action' ,
+     'comedy' ,'thriller ', 'horror','animation',
+     'biography','crime','documentary',
+     'family','fantasy','history',
+     'music','musical','sports','war']
 choose = input('would you like to randomize your genre? ').lower()
 
 if choose == 'yes':
@@ -41,9 +49,9 @@ if choose == 'yes':
 	"X-RapidAPI-Host": "imdb8.p.rapidapi.com"
     }
     movies = get(url, headers=headers, params=querystring)
-    random = choice(movies.json())
-    details=movie_title()
-    print(details,'\n')
+    random_movie = choice(movies.json())
+    movie_details=movie_title()
+    print(movie_details,'\n')
     
     
 else:
@@ -51,6 +59,6 @@ else:
     'sci-fi ,action ,comedy ,thriller ,animation\n,biography ,family ,crime '
     ',documentary ,fantasy ,history ,msuic ,musical ,sports ,war or horror: ').lower()
     movies=api_showing_movie()
-    random=choice(movies.json())
-    details=movie_title()  
-    print(details,'\n') 
+    random_movie=choice(movies.json())
+    movie_details=movie_title()  
+    print(movie_details,'\n') 
