@@ -25,8 +25,15 @@ def movie_title():
     ID = random_movie[7:-1]
     API_KEY='6bf7ef52'
     movie_info=get('http://www.omdbapi.com/?apikey='+API_KEY+'&i='+ID).json()
-    return (movie_info)
-
+    if 'Title' in movie_info:
+        return ('movie title: '+movie_info['Title']+'\n'+
+                'plot of the movie: '+movie_info['Plot']+'\n'+
+                'genre of movie: '+movie_info['Genre']+'\n'+
+                'main actors: '+movie_info['Actors']+'\n'+
+                'year of release: '+movie_info['Year']+'\n'+
+                'rating of the movie: '+movie_info['imdbRating']+'\n'+
+                'duration of movie:'+movie_info['Runtime'])
+    
 mood=[
     'romance' ,'mystery' ,'drama' ,
     'adventure' ,'sci-fi ','action' ,
@@ -48,8 +55,8 @@ if choose == 'yes':
     }
     movies = get(url, headers=headers, params=querystring)
     random_movie = choice(movies.json())
-    movie_details=json.dumps(movie_title(),indent=1)
-    print(movie_details,'\n')
+    movie_info=movie_title()
+    print(movie_info)
     
 else:
     mood = input ('choose your genre: romance ,mystery ,drama ,adventure ,'
@@ -57,5 +64,5 @@ else:
     ',documentary ,fantasy ,history ,msuic ,musical ,sports ,war or horror: ').lower()
     movies=api_showing_movie()
     random_movie=choice(movies.json())
-    movie_details=json.dumps(movie_title(),indent=1)
-    print(movie_details,'\n') 
+    movie_info=movie_title()
+    print(movie_info)
