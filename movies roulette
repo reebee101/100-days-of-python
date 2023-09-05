@@ -1,5 +1,6 @@
 from random import choice
 from requests import get
+import json
 def api_showing_movie():
     '''()->str
     function uses an imdb api
@@ -13,23 +14,27 @@ def api_showing_movie():
 	"X-RapidAPI-Host": "imdb8.p.rapidapi.com"
     }
     movies=get(url, headers=headers, params=querystring)
-    if movies.status_code==200:
+    try :
+        assert movies.status_code==200
         return(movies)
-    else:
-        print("Error getting a movie!")
+    except AssertionError:
+        print("Error with API,try again later :)")
         return None
  
 def movie_title():
     ID = random_movie[7:-1]
     API_KEY='6bf7ef52'
     movie_info=get('http://www.omdbapi.com/?apikey='+API_KEY+'&i='+ID).json()
-    
-mood=['romance' ,'mystery' ,'drama' ,
-     'adventure' ,'sci-fi ','action' ,
-     'comedy' ,'thriller ', 'horror','animation',
-     'biography','crime','documentary',
-     'family','fantasy','history',
-     'music','musical','sports','war']
+    return (movie_info)
+
+mood=[
+    'romance' ,'mystery' ,'drama' ,
+    'adventure' ,'sci-fi ','action' ,
+    'comedy' ,'thriller ', 'horror','animation',
+    'biography','crime','documentary',
+    'family','fantasy','history',
+    'music','musical','sports','war'
+]
 choose = input('would you like to randomize your genre? ').lower()
 
 if choose == 'yes':
@@ -43,9 +48,8 @@ if choose == 'yes':
     }
     movies = get(url, headers=headers, params=querystring)
     random_movie = choice(movies.json())
-    movie_details=movie_title()
+    movie_details=json.dumps(movie_title(),indent=1)
     print(movie_details,'\n')
-    
     
 else:
     mood = input ('choose your genre: romance ,mystery ,drama ,adventure ,'
@@ -53,5 +57,5 @@ else:
     ',documentary ,fantasy ,history ,msuic ,musical ,sports ,war or horror: ').lower()
     movies=api_showing_movie()
     random_movie=choice(movies.json())
-    movie_details=movie_title()  
+    movie_details=json.dumps(movie_title(),indent=1)
     print(movie_details,'\n') 
