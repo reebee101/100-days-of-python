@@ -1,0 +1,44 @@
+def signup():
+    username=input('enter your username: ')
+    email=input('please enter your email: ')
+    while '@' and '.' not in email:
+        print ('please enter a valid email.')
+        email=input('please enter your email: ')            
+        
+    pswrd=input('please enter your password: ')
+    while len(pswrd)<8:
+        print ('password is too weak,please add more digits.')  
+        pswrd=input('please enter your password: ')
+        
+    pswrd_cnf=input('please re-enter your password: ')
+    if pswrd==pswrd_cnf:
+        with open('credentials.txt','w') as f: 
+            f.write(email+'\n'+username +'\n'+pswrd)
+        f.close()       
+        print(f'signup succesful,welcome {username}')
+    else:
+        print('password doesnt match')
+
+def login():
+    identify=input('please enter your email or username: ')
+    pswrd=input('please enter your password: ')        
+    with open('credentials.txt','r') as f:
+        stored_email,stored_pswrd,stored_username=f.read().split('\n')
+    f.close()
+    if identify==stored_email or stored_username and pswrd==stored_pswrd:
+        print(f'login successful!,welcome back {stored_username}')
+    else:
+        print('login failed') 
+        
+while '1':
+     print ('LOGIN SYSTEM:\n1-signup\n2-login\n3-exit')     
+     ch = input("Enter your choice: ").lower()
+     if ch == '1' or ch=='signup':
+        signup()
+     elif ch == '2' or ch=='login':
+        login()
+        break
+     elif ch == '3' or ch=='exit':
+        break
+     else:
+        print("please enter a valid input!")
