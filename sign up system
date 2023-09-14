@@ -1,44 +1,89 @@
+import re
+
 def signup():
-    username=input('enter your username: ')
-    email=input('please enter your email: ')
-    while '@' and '.' not in email:
-        print ('please enter a valid email.')
-        email=input('please enter your email: ')            
+    username = input('Enter your username: ').strip().lower()
+    while len(username) < 2 or len(username) >= 11 or ' ' in username:
+        print('Username must be between 3 and 10 characters and should not contain spaces.')
+        username = input('Enter your username: ').strip().lower()
         
-    pswrd=input('please enter your password: ')
-    while len(pswrd)<8:
-        print ('password is too weak,please add more digits.')  
-        pswrd=input('please enter your password: ')
+    email = input('Enter your email address: ').strip()
+    while not re.search(r'^\w+@[a-zA-Z]+\.[a-zA-Z]+$', email, re.IGNORECASE) or ' ' in email:
+        print('Please enter a valid email address.')
+        email = input('Enter your email address: ').strip()
+    
+    password = input('Enter your password: ').strip().lower()
+    
+    while len(password) < 8:
+        print('Password is too weak. Please enter at least 8 characters.')
+        password = input('Enter your password: ').strip().lower()
         
-    pswrd_cnf=input('please re-enter your password: ')
-    if pswrd==pswrd_cnf:
-        with open('credentials.txt','w') as f: 
-            f.write(email+'\n'+username +'\n'+pswrd)
-        f.close()       
-        print(f'signup succesful,welcome {username}')
+    confirm_password = input('Re-enter your password: ').strip().lower()
+    
+    with open('credentials.txt', 'r') as f: #to check if username or email are already taken
+        lines = f.readlines()
+
+    for i in range(0, len(lines), 3):
+        stored_username = lines[i+1].strip()
+        stored_email = lines[i].strip()
+
+        if username == stored_username:
+            print('Username already exists. Please choose a different username.')
+            return
+        if email == stored_email:
+            print('Email already exists. Please use a different email address.')
+            return
+        
+    if password == confirm_password:
+        try:
+            with open('credentials.txt', 'a') as f:
+                f.write(f'{username}\n{email}\n{password}\n')
+                print(f'Signup successful! Welcome {username}, Please log in.')
+        except IOError:
+            print('An error occurred while saving the credentials.')
     else:
-        print('password doesnt match')
+        print('Passwords do not match.')
 
 def login():
-    identify=input('please enter your email or username: ')
-    pswrd=input('please enter your password: ')        
-    with open('credentials.txt','r') as f:
-        stored_email,stored_pswrd,stored_username=f.read().split('\n')
-    f.close()
-    if identify==stored_email or stored_username and pswrd==stored_pswrd:
-        print(f'login successful!,welcome back {stored_username}')
-    else:
-        print('login failed') 
+    identify = input('Enter your email or username: ').strip()
+    password = input('Enter your password: ').strip()
+
+    try:
+        with open('credentials.txt', 'r') as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        print('The credentials file does not exist.')
+        return
+    except IOError:
+        print('An error occurred while reading the credentials file.')
+        return
+
+    for i in range(0, len(lines), 3):
+        credentials = {
+            'username': lines[i].strip(),
+            'email': lines[i + 1].strip(),
+            'password': lines[i + 2].strip()
+        }
+
+        if (identify == credentials['username'] or identify == credentials['email']) and password == credentials['password']:
+            print(f'Login successful! Welcome back, {credentials["username"]}')
+                 # , {credentials["username"]}')
+            return
+
+    print('Login failed')
         
-while '1':
-     print ('LOGIN SYSTEM:\n1-signup\n2-login\n3-exit')     
-     ch = input("Enter your choice: ").lower()
-     if ch == '1' or ch=='signup':
-        signup()
-     elif ch == '2' or ch=='login':
-        login()
-        break
-     elif ch == '3' or ch=='exit':
-        break
-     else:
-        print("please enter a valid input!")
+def main():        
+    while True:
+        print('LOGIN SYSTEM:\n1 - Signup\n2 - Login\n3 - Exit')     
+        choice = input('Enter your choice: ').lower()
+        
+        if choice == '1' or choice == 'signup':
+            signup()
+        elif choice == '2' or choice == 'login':
+            login()
+            break
+        elif choice == '3' or choice == 'exit':
+            break
+        else:
+            print('Please enter a valid input!')
+
+main()
